@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "My API",
-        "description": "This is a sample API",
+        "title": "Todo List API",
+        "description": "This API is used to manage todo items",
         "version": "1.0.0"
     },
     "servers": [
@@ -11,72 +11,100 @@
         }
     ],
     "paths": {
-        "/": {
+        "/todos": {
             "get": {
-                "summary": "Hello Worldを返すエンドポイント",
+                "summary": "Todoリストの取得",
+                "description": "Todoリストを取得するためのAPIエンドポイント",
                 "responses": {
                     "200": {
-                        "description": "Hello Worldを返す",
+                        "description": "Todoリストを返す",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "message": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "example": {
-                                        "message": "Hello World!"
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Todo"
                                     }
+                                },
+                                "example": [
+                                    {
+                                        "id": 1,
+                                        "title": "todo1",
+                                        "completed": false
+                                    },
+                                    {
+                                        "id": 2,
+                                        "title": "todo2",
+                                        "completed": true
+                                    },
+                                    {
+                                        "id": 3,
+                                        "title": "todo3",
+                                        "completed": false
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "新しいTodoの作成",
+                "description": "新しいTodoを作成するためのAPIエンドポイント",
+                "requestBody": {
+                    "description": "新しいTodoの情報",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/NewTodo"
+                            },
+                            "example": {
+                                "title": "new todo"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "新しいTodoを作成し、作成したTodoを返す",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Todo"
+                                },
+                                "example": {
+                                    "id": 4,
+                                    "title": "new todo",
+                                    "completed": false
                                 }
                             }
                         }
                     }
                 }
             }
-        },
-        "/endpoints": {
-            "get": {
-                "summary": "APIの全エンドポイントを返すエンドポイント",
-                "responses": {
-                    "200": {
-                        "description": "APIの全エンドポイントを返す",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "object",
-                                        "properties": {
-                                            "methods": {
-                                                "type": "array",
-                                                "items": {
-                                                    "type": "string"
-                                                }
-                                            },
-                                            "path": {
-                                                "type": "string"
-                                            }
-                                        }
-                                    },
-                                    "example": [
-                                        {
-                                            "methods": [
-                                                "GET"
-                                            ],
-                                            "path": "/"
-                                        },
-                                        {
-                                            "methods": [
-                                                "GET"
-                                            ],
-                                            "path": "/endpoints"
-                                        }
-                                    ]
-                                }
-                            }
-                        }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Todo": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "completed": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "NewTodo": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string"
                     }
                 }
             }
