@@ -20,7 +20,7 @@ class TodosWithoutDbController {
     // 新しいTodoの作成
     static create(req, res, next) {
         try {
-            const todo = Todo.fromRequestBody(req.body);
+            const todo = TodoWithoutDb.fromRequestBody(req.body);
             TodosWithoutDbController.todos.push(todo);
             res.status(201).json(todo);
         } catch (err) {

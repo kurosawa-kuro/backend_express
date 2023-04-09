@@ -7,8 +7,8 @@ class TodoWithoutDb {
 
     static fromRequestBody(reqBody) {
         const { title, completed } = reqBody;
-        return new Todo(
-            Todo.generateId(),
+        return new TodoWithoutDb(
+            TodoWithoutDb.generateId(),
             title || '',
             completed || false
         );
